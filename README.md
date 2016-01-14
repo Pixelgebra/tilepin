@@ -22,3 +22,5 @@ where `#path/to/file` is the path (file name included) to image.
 + [ ] Keyboard press event handling
 + [ ] Draw auxiliary line
 + [ ] Draw auxiliary point
++ [ ] Draw background for transparency
++ [ ] Draw grid  
