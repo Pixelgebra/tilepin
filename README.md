@@ -19,9 +19,10 @@ where `#path/to/file` is the path (file name included) to image.
 
 + [X] Basic image load
 + [X] Get mouse position
-+ [ ] Mouse click event handling
++ [X] Mouse click event handling
++ [X] Restore cutting points
 + [ ] Keyboard press event handling
 + [X] Draw auxiliary line
-+ [ ] Draw auxiliary point
++ [X] Draw auxiliary point
 + [ ] Draw background for transparency
-+ [ ] Draw grid-ish 
++ [ ] Draw grid-ish
