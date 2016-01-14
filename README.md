@@ -17,10 +17,11 @@ where `#path/to/file` is the path (file name included) to image.
 
 ## Todo
 
-+ [ ] Basic image load
++ [X] Basic image load
++ [X] Get mouse position
 + [ ] Mouse click event handling
 + [ ] Keyboard press event handling
-+ [ ] Draw auxiliary line
++ [X] Draw auxiliary line
 + [ ] Draw auxiliary point
 + [ ] Draw background for transparency
-+ [ ] Draw grid  
++ [ ] Draw grid-ish 
