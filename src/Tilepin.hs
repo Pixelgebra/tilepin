@@ -31,7 +31,9 @@ main = do
    (V2 gW gH) <- SDL.surfaceDimensions sf
    let dim = Just $ SDL.Rectangle (P $ V2 0 0) (V2 gW gH)
    let winWH@(V2 winW winH) = (V2 gW gH)
-   let transpDelta = 30
+   let tDelta = 30
+   let tW = gW `div` (2*tDelta)
+   let tH = gH `div` (2*tDelta)
    -- ***************************************** --
    {- SDL and window initialization -}
    -- ----------------------------------------- --
@@ -75,6 +77,16 @@ main = do
          SDL.rendererDrawColor renderer SDL.$=
             V4 180 180 180 maxBound
          SDL.clear renderer
+         --
+         SDL.rendererDrawColor renderer SDL.$=
+            V4 220 220 220 maxBound
+         let bFactors = [ P $ V2 x y
+                        | x<-[0..tW],y<-[0..tH]] :: [Point V2 CInt]
+         let tPos =  (fmap (fmap ((*tDelta).(2*))) bFactors)
+                  ++ (fmap (fmap ((*tDelta).(1+).(2*))) bFactors)
+         --
+         (flip forM_) (SDL.fillRect renderer) $
+            fmap (\p -> Just $ SDL.Rectangle p (V2 tDelta tDelta)) tPos
          --
          SDL.copy renderer imgTx dim dim
          -- update window title
