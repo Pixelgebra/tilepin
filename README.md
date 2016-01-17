@@ -26,3 +26,4 @@ where `#path/to/file` is the path (file name included) to image.
 + [X] Draw auxiliary point
 + [X] Draw background pattern for transparency
 + [ ] Draw grid-ish
++ [ ] Zoom in/out
