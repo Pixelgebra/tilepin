@@ -7,7 +7,7 @@ import Data.Word (Word8(..))
 import Data.Text (Text(..),pack,append)
 import Data.Monoid (Last(..))
 import Data.Foldable (foldMap)
-import Data.Maybe (maybe)
+import Data.Maybe (maybe,catMaybes)
 --
 import Foreign.C.Types (CInt(..))
 --
@@ -19,6 +19,10 @@ import Control.Concurrent (threadDelay)
 import Control.Monad (unless,forM_)
 --
 import System.Environment (getArgs)
+--
+import Internal.Types
+import Internal.Render
+import Internal.EventHandle
 --
 main :: IO ()
 main = do
@@ -63,16 +67,16 @@ main = do
          -- *********************************** --
          events <- SDL.pollEvents
          -- quit event detecting
-         let quit = any (== SDL.QuitEvent) $
-               map SDL.eventPayload events
-         -- mouse click(released) event detecting
-         let mousePressedXY = getLast $
-               foldMap ((Last).clickPicker.SDL.eventPayload) events
+         let quit = detectiveQuit events
+         let mousePressed = detectiveMouseClick events
+         let keyPressed = detectiveKeyPressed events
+         -- *********************************** --
          -- update current cutting points
-         let newCutPs =
-               maybe cutPs (:cutPs) mousePressedXY
+         let newCutPs = maybe cutPs (:cutPs) mousePressed
          -- get current mouse location
          mouseXY <- SDL.getAbsoluteMouseLocation
+         -- *********************************** --
+         (flip forM_) (kbeHandler renderer) keyPressed
          -- *********************************** --
          SDL.rendererDrawColor renderer SDL.$=
             V4 180 180 180 maxBound
@@ -104,24 +108,24 @@ main = do
    SDL.destroyWindow window
    SDL.destroyRenderer renderer
    SDL.quit
+
 --
-drawAuxLines :: SDL.Renderer
-             -> V2 CInt -- ^ window W/H
-             -> Point V2 CInt -- ^ mouse X/Y
-             -> IO ()
-drawAuxLines rdr (V2 winW winH) (P (V2 mouseX mouseY)) = do
-   SDL.rendererDrawColor rdr SDL.$=
-      V4 minBound minBound minBound maxBound
-   SDL.drawLine rdr (P$V2 0 mouseY) (P$V2 winW mouseY)
-   --
-   SDL.rendererDrawColor rdr SDL.$=
-      V4 maxBound maxBound maxBound maxBound
-   SDL.drawLine rdr (P$V2 mouseX 0) (P$V2 mouseX winH)
+
+
+
 --
-clickPicker :: SDL.EventPayload -> Maybe (Point V2 CInt)
-clickPicker (SDL.MouseButtonEvent mmed) =
-   case SDL.mouseButtonEventMotion mmed of
-      SDL.Released -> Just $ fmap CInt $ SDL.mouseButtonEventPos mmed
-      SDL.Pressed  -> Nothing
-clickPicker _ = Nothing
+-- drawDashedLineH :: SDL.Renderer
+--                 -> CInt -- window width
+--                 -> CInt -- vertical pos
+--                IO ()
+-- drawDashedLineH rdr wid vp = do
+--    (SDL.drawLine rdr)
+
+
+
+
+
+
+
+
 -- .
