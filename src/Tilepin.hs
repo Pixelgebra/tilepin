@@ -66,15 +66,15 @@ main = do
    let loop cutPs = do
          -- *********************************** --
          events <- SDL.pollEvents
-         -- quit event detecting
+         -- events detecting
          let quit = detectiveQuit events
          let mousePressed = detectiveMouseClick events
          let keyPressed = detectiveKeyPressed events
+         -- obtain current cursor location
+         mouseXY <- SDL.getAbsoluteMouseLocation
          -- *********************************** --
          -- update current cutting points
          let newCutPs = maybe cutPs (:cutPs) mousePressed
-         -- get current mouse location
-         mouseXY <- SDL.getAbsoluteMouseLocation
          -- *********************************** --
          (flip forM_) (kbeHandler renderer) keyPressed
          -- *********************************** --

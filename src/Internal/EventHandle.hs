@@ -11,6 +11,7 @@ import Data.Maybe (maybe,catMaybes)
 import Foreign.C.Types (CInt(..))
 --
 import Internal.Types
+-- ===============================
 --
 detectiveQuit :: [SDL.Event] -> Bool
 detectiveQuit
@@ -25,8 +26,9 @@ detectiveMouseClick
 detectiveKeyPressed :: [SDL.Event] -> [SDL.Scancode]
 detectiveKeyPressed
    = catMaybes
-   . map (keypressPicker . SDL.eventPayload) 
+   . map (keypressPicker . SDL.eventPayload)
 --
+-- ===============================
 clickPicker :: SDL.EventPayload -> Maybe Pt
 clickPicker (SDL.MouseButtonEvent mmed)
    | SDL.mouseButtonEventMotion mmed == SDL.Released
